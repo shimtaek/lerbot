@@ -51,3 +51,35 @@ python -m lerobot.teleoperate \
   --teleop.port=/dev/ttyACM0 \
   --teleop.id=my_awesome_leader_arm \
   --display_data=true
+
+
+#토큰 해커톤
+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
+
+
+허깅페이스 사요자이름
+shimtaxi
+
+# 녹화
+python -m lerobot.record \
+  --robot.type=so101_follower \
+  --robot.port=/dev/ttyACM1 \
+  --robot.id=my_awesome_follower_arm \
+  --robot.cameras="{ front: {type: opencv, index_or_path: '/dev/video4', width: 640, height: 480, fps: 30}}" \
+  --teleop.type=so101_leader \
+  --teleop.port=/dev/ttyACM0 \
+  --teleop.id=my_awesome_leader_arm \
+  --display_data=true \
+  --dataset.repo_id=shimtaxi/record-pold11 \
+  --dataset.num_episodes=20 \
+  --dataset.single_task="Fold the pee pad1"
+
+#업로드후
+
+python -m lerobot.replay \
+  --robot.type=so101_follower \
+  --robot.port=/dev/ttyACM1 \
+  --robot.id=my_awesome_follower_arm \
+  --dataset.repo_id=shimtaxi/record-pold10 \
+  --dataset.episode=0
+
