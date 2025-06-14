@@ -1,0 +1,32 @@
+
+
+setup_motors
+
+#follower
+python -m lerobot.setup_motors \
+  --robot.type=so101_follower \
+  --robot.port=/dev/ttyACM1
+
+
+#leader
+python -m lerobot.setup_motors \
+  --teleop.type=so101_leader \
+  --teleop.port=/dev/ttyACM0
+
+
+
+
+
+python -m lerobot.calibrate \
+  --teleop.type=so101_leader \
+  --teleop.port=/dev/ttyACM0 \
+  --teleop.id=my_awesome_leader_arm
+
+python -m lerobot.calibrate \
+  --robot.type=so101_follower \
+  --robot.port=/dev/ttyACM1 \
+  --robot.id=my_awesome_follower_arm
+
+
+sudo chmod 666 /dev/ttyACM0
+sudo chmod 666 /dev/ttyACM1
