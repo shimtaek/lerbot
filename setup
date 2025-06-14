@@ -3,13 +3,13 @@
 setup_motors
 
 #follower
-python -m lerobot.setup_motors \
+'python -m lerobot.setup_motors \
   --robot.type=so101_follower \
   --robot.port=/dev/ttyACM1
 
 
 #leader
-python -m lerobot.setup_motors \
+'python -m lerobot.setup_motors \
   --teleop.type=so101_leader \
   --teleop.port=/dev/ttyACM0
 
