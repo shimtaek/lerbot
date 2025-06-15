@@ -56,6 +56,8 @@ python -m lerobot.teleoperate \
 #토큰 해커톤
 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
 
+#토큰 완다
+ce5f1e730af68cfa21c2af5af3ba57c6fbb6fe15
 
 허깅페이스 사요자이름
 shimtaxi
@@ -70,8 +72,8 @@ python -m lerobot.record \
   --teleop.port=/dev/ttyACM0 \
   --teleop.id=my_awesome_leader_arm \
   --display_data=true \
-  --dataset.repo_id=shimtaxi/record-pold30 \
-  --dataset.num_episodes=30 \
+  --dataset.repo_id=shimtaxi/record-ex1 \
+  --dataset.num_episodes=5 \
   --dataset.single_task="Fold the pee pad1"
 
 #업로드후
@@ -80,10 +82,66 @@ python -m lerobot.replay \
   --robot.type=so101_follower \
   --robot.port=/dev/ttyACM1 \
   --robot.id=my_awesome_follower_arm \
-  --dataset.repo_id=shimtaxi/record-pold30 \
-  --dataset.episode=1                                #best 1
+  --dataset.repo_id=shimtaxi/record-ex1 \
+  --dataset.episode=3                                #best 1   2번 x
+##best
+python -m lerobot.replay \
+  --robot.type=so101_follower \
+  --robot.port=/dev/ttyACM1 \
+  --robot.id=my_awesome_follower_arm \
+  --dataset.repo_id=shimtaxi/record-pold40 \
+  --dataset.episode=2  
+
+#best2
+python -m lerobot.replay \
+  --robot.type=so101_follower \
+  --robot.port=/dev/ttyACM1 \
+  --robot.id=my_awesome_follower_arm \
+  --dataset.repo_id=shimtaxi/record-pold50 \
+  --dataset.episode 1
+#학습후 실행
+python -m lerobot.record \
+  --robot.type=so101_follower \
+  --robot.port=/dev/ttyACM1 \
+  --robot.id=my_awesome_follower_arm \
+  --robot.cameras="{ front: {type: opencv, index_or_path: '/dev/video4', width: 640, height: 480, fps: 30} }" \
+  --display_data=true \
+  --dataset.repo_id=shimtaxi/eval_pold40 \
+  --dataset.num_episodes=5 \
+  --dataset.single_task="Fold the pee pad1" \
+  --policy.path=shimtaxi/act_record_pold50_10k
 
 
+
+
+#기존실행완료시
+이 오류는 다음과 같습니다:
+
+    FileExistsError: [Errno 17] File exists
+
+즉, 현재 Hugging Face 캐시에 이미 shimtaxi/eval_pold35 라는 동일한 이름의 데이터셋 디렉토리가 존재해서 record.py가 새로 생성하려다가 실패한 것입니다.
+✅ 해결 방법 (둘 중 하나 선택)
+✅ 방법 1: 기존 캐시 삭제하고 다시 실행
+
+rm -rf ~/.cache/huggingface/lerobot/shimtaxi/eval_pold35
+
+그리고 다시 python -m lerobot.record ... 명령 실행하면 됩니다.
+✅ 방법 2: 새로운 이름으로 실행
+
+--dataset.repo_id=shimtaxi/eval_pold35_v2
+
+예시:
+
+python -m lerobot.record \
+  --robot.type=so101_follower \
+  --robot.port=/dev/ttyACM1 \
+  --robot.id=my_awesome_follower_arm \
+  --robot.cameras="{ front: {type: opencv, index_or_path: '/dev/video4', width: 640, height: 480, fps: 30} }" \
+  --display_data=true \
+  --dataset.repo_id=shimtaxi/eval_pold40_v6 \
+  --dataset.num_episodes=5 \
+  --dataset.single_task="Fold the pee pad1" \
+  --policy.path=shimtaxi/act_record_pold40_10k
 
 
 
